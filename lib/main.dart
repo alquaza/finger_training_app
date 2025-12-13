@@ -1,4 +1,6 @@
-import 'package:flutter/material.dart';
+import "package:flutter/material.dart";
+import "package:finger_training_app/timer_screen.dart";
+import "package:finger_training_app/navigation.dart";
 
 void main() {
   runApp(const MyApp());
@@ -7,14 +9,19 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
+  // the root of the application
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Finger Strength Training',
+      // this title is not displayed inside the app
+      title: "Finger Strength Training",
       home: Scaffold(
-        appBar: AppBar(title: const Text('Flutter Demo Home Page')),
-        body: const Center(child: Text('Hello, World!')),
+        // bar at the top
+        appBar: AppBar(title: const Text("Finger Training")),
+        // main content of the app screen
+        body: TimerScreen(),
+        // navigation bar at the bottom
+        bottomNavigationBar: Navigation(),
       ),
     );
   }
