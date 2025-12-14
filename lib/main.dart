@@ -1,5 +1,5 @@
 import "package:flutter/material.dart";
-import "package:finger_training_app/timer_screen.dart";
+import "package:finger_training_app/start_screen.dart";
 import "package:finger_training_app/tracking_screen.dart";
 import "package:finger_training_app/settings_screen.dart";
 
@@ -16,14 +16,14 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final List<Widget> screens = const [
-    TimerScreen(),
+    StartScreen(),
     TrackingScreen(),
     SettingsScreen(),
   ];
 
+  // keeps track of which screen is currently selected
   int selectedIndex = 0;
 
-  // the root of the application
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

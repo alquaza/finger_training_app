@@ -22,10 +22,12 @@ The app's planned features:
 - After starting, does 5 second count-down so you can get into position (tells you what first thing is before you start)
 - Tells you how long the session will be before you start
 - Add a "pause" button during workout
-- Not a "feature" but I want to add small banner ads (no audio)
+
+Not features but other things:
+
+- Handle case where someone closes the app (minimize and/or close) while exercising
+- Add small banner ads while you do your session (no audio)
 
 Next to-do:
 
-- Add timer
-- Make navigation work and add blank other screens
 - Add default routine and make it work
