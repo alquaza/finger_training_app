@@ -7,7 +7,7 @@ class TrackingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Text(
-        "Tracking Screen",
+        "Tracking Screen Placeholder",
         style: TextStyle(fontSize: 24),
       ),
     );

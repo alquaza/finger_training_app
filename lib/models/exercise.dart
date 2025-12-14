@@ -7,32 +7,67 @@ class Exercise {
 
 // remember to start with "get ready" and end with a position not a rest
 
-List<Exercise> testRoutine = [
-  Exercise("Get ready", 2),
+/*
+// for testing, comment out other routine
+List<Exercise> defaultRoutine = [
+  Exercise("Get ready", 3),
   Exercise("Position 1", 2),
   Exercise("Rest 1", 2),
+  Exercise("Position 2", 2),
 ];
+*/
 
 List<Exercise> defaultRoutine = [
   Exercise("Get ready", 3),
 
-  Exercise("Position 1", 10),
-  Exercise("Break 1", 20),
+  // 6 sets of four finger half-crimp
+  Exercise("Four finger half-crimp", 10),
+  Exercise("Rest", 20),
+  Exercise("Four finger half-crimp", 10),
+  Exercise("Rest", 20),
+  Exercise("Four finger half-crimp", 10),
+  Exercise("Rest", 20),
+  Exercise("Four finger half-crimp", 10),
+  Exercise("Rest", 20),
+  Exercise("Four finger half-crimp", 10),
+  Exercise("Rest", 20),
+  Exercise("Four finger half-crimp", 10),
+  Exercise("Rest", 20),
 
-  Exercise("Position 2", 10),
-  Exercise("Break 2", 20),
+  // 6 sets of 3 finger drag (no pinkie)
+  Exercise("Three finger drag (no pinkie)", 10),
+  Exercise("Rest", 20),
+  Exercise("Three finger drag (no pinkie)", 10),
+  Exercise("Rest", 20),
+  Exercise("Three finger drag (no pinkie)", 10),
+  Exercise("Rest", 20),
+  Exercise("Three finger drag (no pinkie)", 10),
+  Exercise("Rest", 20),
+  Exercise("Three finger drag (no pinkie)", 10),
+  Exercise("Rest", 20),
+  Exercise("Three finger drag (no pinkie)", 10),
+  Exercise("Rest", 20),
 
-  Exercise("Position 3", 10),
-  Exercise("Break 3", 20),
+  // 2 sets of two finger drag (index and middle)
+  Exercise("Two finger drag (index/middle)", 10),
+  Exercise("Rest", 20),
+  Exercise("Two finger drag (index/middle)", 10),
+  Exercise("Rest", 20),
 
-  Exercise("Position 4", 10),
-  Exercise("Break 4", 20),
+  // 2 sets of two finger drag (middle and ring)
+  Exercise("Two finger drag (middle/ring)", 10),
+  Exercise("Rest", 20),
+  Exercise("Two finger drag (middle/ring)", 10),
+  Exercise("Rest", 20),
 
-  Exercise("Position 5", 10),
-  Exercise("Break 5", 20),
+  // 2 sets of two finger half crimp (index and middle)
+  Exercise("Two finger half-crimp (index/middle)", 10),
+  Exercise("Rest", 20),
+  Exercise("Two finger half-crimp (index/middle)", 10),
+  Exercise("Rest", 20),
 
-  Exercise("Position 6", 10),
-  Exercise("Break 6", 20),
-
-  Exercise("Position 7", 10),
+  // 2 sets of two finger half crimp (middle and ring)
+  Exercise("Two finger half-crimp (middle/ring)", 10),
+  Exercise("Rest", 20),
+  Exercise("Two finger half-crimp (middle/ring)", 10),
 ];

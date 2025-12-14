@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import "package:finger_training_app/timer_screen.dart";
+import "package:finger_training_app/models/exercise.dart";
 
 class StartScreen extends StatelessWidget {
   const StartScreen({super.key});
@@ -12,9 +13,12 @@ class StartScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            /*
+            // TODO: add dropdown menu to allow user to select routine
             Text(
-              "Dropdown menu to select routine",
+              "Placeholder for dropdown menu to select routine",
             ),
+            */
             Spacer(),
             // TODO: make this dynamic based on selected exercise
             Text(
@@ -23,7 +27,7 @@ class StartScreen extends StatelessWidget {
             ),
             SizedBox(height: 20),
             Text(
-              "Front two fingers half-crimp",
+              defaultRoutine[1].name,
               style: TextStyle(fontSize: 20),
             ),
             Spacer(),

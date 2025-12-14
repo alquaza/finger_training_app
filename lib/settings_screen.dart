@@ -7,7 +7,7 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Text(
-        "Settings Screen",
+        "Settings Screen Placeholder",
         style: TextStyle(fontSize: 24),
       ),
     );

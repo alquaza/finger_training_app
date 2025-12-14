@@ -1,77 +1,71 @@
-import 'package:flutter/material.dart';
-import 'dart:async';
+import "package:flutter/material.dart";
+import "dart:async";
+import "package:finger_training_app/models/exercise.dart";
 
 class TimerScreen extends StatefulWidget {
   const TimerScreen({super.key});
 
   @override
-  State<TimerScreen> createState() => _TimerScreenState();
+  State<TimerScreen> createState() => TimerScreenState();
 }
 
-class _TimerScreenState extends State<TimerScreen> {
+class TimerScreenState extends State<TimerScreen> {
   Timer? timer;
 
-  int secondsRemaining = 3;
+  int currentExerciseIndex = 0;
+  int secondsRemaining = 0;
+
   bool isPaused = false;
   bool isFinished = false;
-
-  String statusText = "Get ready";
-
-  /// Sequence: 10, 5 repeated 3 times
-  final List<int> _intervals = [10, 5, 10, 5, 10, 5];
-  int currentIntervalIndex = -1; // starts before the first work interval
 
   @override
   void initState() {
     super.initState();
-    startTimer();
+    startSession();
   }
 
-  void startTimer() {
+  void startSession() {
+    secondsRemaining = defaultRoutine[currentExerciseIndex].duration;
+
     timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      // if startSession called while paused or finished, do nothing
       if (isPaused || isFinished) return;
 
       setState(() {
-        if (secondsRemaining > 0) {
+        if (secondsRemaining > 1) {
           secondsRemaining--;
         } else {
-          moveToNextPhase();
+          playBeep();
+          moveToNextExercise();
         }
       });
     });
   }
 
-  void moveToNextPhase() {
-    // Finished "Get ready"
-    if (currentIntervalIndex == -1) {
-      currentIntervalIndex = 0;
-      secondsRemaining = _intervals[currentIntervalIndex];
-      statusText = "Work";
-      return;
-    }
+  void moveToNextExercise() {
+    currentExerciseIndex++;
 
-    currentIntervalIndex++;
-
-    // All intervals completed
-    if (currentIntervalIndex >= _intervals.length) {
+    if (currentExerciseIndex >= defaultRoutine.length) {
       finishSession();
       return;
     }
 
-    secondsRemaining = _intervals[currentIntervalIndex];
-    statusText = _intervals[currentIntervalIndex] == 10 ? "Work" : "Rest";
+    secondsRemaining = defaultRoutine[currentExerciseIndex].duration;
   }
 
-  void finishSession() {
-    timer?.cancel();
-    isFinished = true;
-    statusText = "Good job!";
+  void playBeep() {
+    // TODO: add functionality to play a beep sound
   }
 
   void togglePause() {
     setState(() {
       isPaused = !isPaused;
     });
+  }
+
+  void finishSession() {
+    timer?.cancel();
+    isFinished = true;
   }
 
   // this method is called when the widget is removed from the widget tree, ensures no memory leaks
@@ -83,8 +77,13 @@ class _TimerScreenState extends State<TimerScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final String titleText = isFinished
+        ? "Good job! Session completed."
+        : defaultRoutine[currentExerciseIndex].name;
+
+    // TODO: ask them to confirm before allowing user to go back
     return Scaffold(
-      appBar: AppBar(title: const Text('Training Session')),
+      appBar: AppBar(title: const Text("Training Session")),
       body: Center(
         child: Container(
           margin: const EdgeInsets.all(40),
@@ -92,23 +91,33 @@ class _TimerScreenState extends State<TimerScreen> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                statusText,
+                titleText,
                 style: const TextStyle(fontSize: 24),
               ),
               const SizedBox(height: 20),
-              Text(
-                isFinished ? "" : "$secondsRemaining",
-                style: const TextStyle(
-                  fontSize: 100,
-                  fontWeight: FontWeight.bold,
+              if (!isFinished)
+                Text(
+                  "$secondsRemaining",
+                  style: const TextStyle(
+                    fontSize: 100,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
+              const SizedBox(height: 30),
+              if (!isFinished &&
+                  currentExerciseIndex + 1 < defaultRoutine.length)
+                Text(
+                  "Next exercise: ${defaultRoutine[currentExerciseIndex + 1].name}",
+                  style: const TextStyle(
+                    fontSize: 15,
+                  ),
+                ),
               const SizedBox(height: 30),
               if (!isFinished)
                 ElevatedButton(
                   onPressed: togglePause,
                   child: Padding(
-                    padding: const EdgeInsets.all(10.0),
+                    padding: const EdgeInsets.all(10),
                     child: Text(
                       isPaused ? "Resume" : "Pause",
                       style: const TextStyle(fontSize: 20),

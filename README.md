@@ -14,10 +14,12 @@ The app's planned features:
 - Habit tracking calendar (colours in the days you do it)
 - Casual reminders to stretch or work on posture while you train
 - Monthly check-ins where you can write down where you are currently at (to see gains)
-- Useful tips you should know (could show while training)
+- Useful tips you should know (show while training)
   - Only train at 30-40% of max, you shouldn't be straining yourself
   - Train at most 10 minutes every 6 hours
   - Stretch or work on posture between training
+  - Intensity almost doesn't matter as long as it's under SOME stress
+  - Gently stretch out pinkie if you want while resting
 - Setting to switch to/from dark mode
 - After starting, does 5 second count-down so you can get into position (tells you what first thing is before you start)
 - Tells you how long the session will be before you start
@@ -31,3 +33,5 @@ Not features but other things:
 Next to-do:
 
 - Add default routine and make it work
+- Make sure you understand the timer_screen code
+- Add start_screen changes from chatgpt
