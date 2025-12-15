@@ -3,7 +3,9 @@ import "dart:async";
 import "package:finger_training_app/models/exercise.dart";
 
 class TimerScreen extends StatefulWidget {
-  const TimerScreen({super.key});
+  const TimerScreen(this.routine, {super.key});
+
+  final List<Exercise> routine;
 
   @override
   State<TimerScreen> createState() => TimerScreenState();
@@ -25,7 +27,7 @@ class TimerScreenState extends State<TimerScreen> {
   }
 
   void startSession() {
-    secondsRemaining = defaultRoutine[currentExerciseIndex].duration;
+    secondsRemaining = widget.routine[currentExerciseIndex].duration;
 
     timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       // if startSession called while paused or finished, do nothing
@@ -45,12 +47,12 @@ class TimerScreenState extends State<TimerScreen> {
   void moveToNextExercise() {
     currentExerciseIndex++;
 
-    if (currentExerciseIndex >= defaultRoutine.length) {
+    if (currentExerciseIndex >= widget.routine.length) {
       finishSession();
       return;
     }
 
-    secondsRemaining = defaultRoutine[currentExerciseIndex].duration;
+    secondsRemaining = widget.routine[currentExerciseIndex].duration;
   }
 
   void playBeep() {
@@ -103,7 +105,7 @@ class TimerScreenState extends State<TimerScreen> {
   Widget build(BuildContext context) {
     final String titleText = isFinished
         ? "Good job! Session completed."
-        : defaultRoutine[currentExerciseIndex].name;
+        : widget.routine[currentExerciseIndex].name;
 
     return PopScope(
       canPop: false,
@@ -145,9 +147,9 @@ class TimerScreenState extends State<TimerScreen> {
                   ),
                 const SizedBox(height: 30),
                 if (!isFinished &&
-                    currentExerciseIndex + 1 < defaultRoutine.length)
+                    currentExerciseIndex + 1 < widget.routine.length)
                   Text(
-                    "Next exercise: ${defaultRoutine[currentExerciseIndex + 1].name}",
+                    "Next exercise: ${widget.routine[currentExerciseIndex + 1].name}",
                     style: const TextStyle(
                       fontSize: 15,
                     ),

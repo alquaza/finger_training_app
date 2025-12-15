@@ -7,6 +7,18 @@ class StartScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final routine = defaultRoutine;
+    // calculate routine length in seconds then convert to minutes
+    int routineTotalSec = 0;
+    int routineMin = 0;
+    int routineSec = 0;
+    for (int i = 0; i < routine.length; i++) {
+      routineTotalSec += routine[i].duration;
+    }
+    routineTotalSec -= 3; // subtract 3 for the "get ready" phase
+    routineMin = (routineTotalSec / 60).toInt();
+    routineSec = (routineTotalSec % 60).toInt();
+
     return Center(
       child: Container(
         margin: EdgeInsets.all(40),
@@ -20,22 +32,27 @@ class StartScreen extends StatelessWidget {
             ),
             */
             Spacer(),
-            // TODO: make this dynamic based on selected exercise
             Text(
               "First exercise:",
-              style: TextStyle(fontSize: 20),
+              style: TextStyle(fontSize: 25),
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 10),
             Text(
-              defaultRoutine[1].name,
-              style: TextStyle(fontSize: 20),
+              routine[1].name,
+              style: TextStyle(fontSize: 25),
             ),
             Spacer(),
+            Text(
+              "Selected routine length: $routineMin minutes and $routineSec seconds.",
+              style: TextStyle(fontSize: 15),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: 10),
             ElevatedButton(
               onPressed: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => TimerScreen(),
+                    builder: (context) => TimerScreen(routine),
                   ),
                 );
               },
