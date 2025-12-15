@@ -38,12 +38,12 @@ class StartScreen extends StatelessWidget {
             ),
             SizedBox(height: 10),
             Text(
-              routine[1].name,
+              routine[1].name, // index 1 so that it skips "get ready"
               style: TextStyle(fontSize: 25),
             ),
             Spacer(),
             Text(
-              "Selected routine length: $routineMin minutes and $routineSec seconds.",
+              "Selected routine length:\n$routineMin minutes and $routineSec seconds.",
               style: TextStyle(fontSize: 15),
               textAlign: TextAlign.center,
             ),

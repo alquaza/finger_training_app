@@ -21,16 +21,26 @@ class TimerScreenState extends State<TimerScreen> {
 
   bool isPaused = false;
   bool isFinished = false;
+  bool soundEnabled = true;
 
   @override
   void initState() {
     super.initState();
     startSession();
 
+    // set options so it ignores silent mode (by being playback/media) but doesn't pause other sounds (like music)
     player.setAudioContext(
       AudioContext(
         iOS: AudioContextIOS(
           category: AVAudioSessionCategory.playback,
+          options: {
+            AVAudioSessionOptions.mixWithOthers,
+          },
+        ),
+        android: AudioContextAndroid(
+          audioFocus: AndroidAudioFocus.none,
+          usageType: AndroidUsageType.media,
+          contentType: AndroidContentType.sonification,
         ),
       ),
     );
@@ -66,6 +76,8 @@ class TimerScreenState extends State<TimerScreen> {
   }
 
   Future<void> playSound() async {
+    if (!soundEnabled) return;
+    // now will only play if sound is enabled
     await player.play(AssetSource('doot.mp3'));
   }
 
@@ -145,14 +157,22 @@ class TimerScreenState extends State<TimerScreen> {
               children: [
                 Text(
                   titleText,
-                  style: const TextStyle(fontSize: 24),
+                  style: const TextStyle(fontSize: 30),
+                  textAlign: TextAlign.center,
                 ),
+                // this text only appears during "Rest" exercise
+                if (titleText == "Rest")
+                  Text(
+                    "Work on your posture, stretch, drink some water, or lightly stretch your pinkies",
+                    style: const TextStyle(fontSize: 15),
+                    textAlign: TextAlign.center,
+                  ),
                 const SizedBox(height: 20),
                 if (!isFinished)
                   Text(
                     "$secondsRemaining",
                     style: const TextStyle(
-                      fontSize: 100,
+                      fontSize: 150,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -160,22 +180,40 @@ class TimerScreenState extends State<TimerScreen> {
                 if (!isFinished &&
                     currentExerciseIndex + 1 < widget.routine.length)
                   Text(
-                    "Next exercise: ${widget.routine[currentExerciseIndex + 1].name}",
+                    "Next exercise:\n${widget.routine[currentExerciseIndex + 1].name}",
                     style: const TextStyle(
-                      fontSize: 15,
+                      fontSize: 20,
                     ),
+                    textAlign: TextAlign.center,
                   ),
                 const SizedBox(height: 30),
                 if (!isFinished)
-                  ElevatedButton(
-                    onPressed: togglePause,
-                    child: Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: Text(
-                        isPaused ? "Resume" : "Pause",
-                        style: const TextStyle(fontSize: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ElevatedButton(
+                        onPressed: togglePause,
+                        child: Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: Text(
+                            isPaused ? "Resume" : "Pause",
+                            style: const TextStyle(fontSize: 20),
+                          ),
+                        ),
                       ),
-                    ),
+                      SizedBox(width: 20),
+                      IconButton(
+                        iconSize: 36,
+                        icon: Icon(
+                          soundEnabled ? Icons.volume_up : Icons.volume_off,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            soundEnabled = !soundEnabled;
+                          });
+                        },
+                      ),
+                    ],
                   ),
               ],
             ),

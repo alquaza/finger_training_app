@@ -6,13 +6,14 @@ class Exercise {
 }
 
 // remember to start with "get ready" and end with a position not a rest
+// the exercises named "Rest" are special and trigger additional text to appear on screen
 
 /*
 // for testing, comment out other routine
 List<Exercise> defaultRoutine = [
   Exercise("Get ready", 3),
   Exercise("Position 1", 2),
-  Exercise("Rest 1", 2),
+  Exercise("Rest", 2),
   Exercise("Position 2", 2),
 ];
 */
