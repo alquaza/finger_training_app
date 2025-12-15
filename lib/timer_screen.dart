@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import "dart:async";
 import "package:finger_training_app/models/exercise.dart";
+import 'package:audioplayers/audioplayers.dart';
 
 class TimerScreen extends StatefulWidget {
   const TimerScreen(this.routine, {super.key});
@@ -13,6 +14,7 @@ class TimerScreen extends StatefulWidget {
 
 class TimerScreenState extends State<TimerScreen> {
   Timer? timer;
+  final player = AudioPlayer();
 
   int currentExerciseIndex = 0;
   int secondsRemaining = 0;
@@ -24,6 +26,14 @@ class TimerScreenState extends State<TimerScreen> {
   void initState() {
     super.initState();
     startSession();
+
+    player.setAudioContext(
+      AudioContext(
+        iOS: AudioContextIOS(
+          category: AVAudioSessionCategory.playback,
+        ),
+      ),
+    );
   }
 
   void startSession() {
@@ -37,7 +47,7 @@ class TimerScreenState extends State<TimerScreen> {
         if (secondsRemaining > 1) {
           secondsRemaining--;
         } else {
-          playBeep();
+          playSound();
           moveToNextExercise();
         }
       });
@@ -55,8 +65,8 @@ class TimerScreenState extends State<TimerScreen> {
     secondsRemaining = widget.routine[currentExerciseIndex].duration;
   }
 
-  void playBeep() {
-    // TODO: add functionality to play a beep sound
+  Future<void> playSound() async {
+    await player.play(AssetSource('doot.mp3'));
   }
 
   void togglePause() {
@@ -74,6 +84,7 @@ class TimerScreenState extends State<TimerScreen> {
   @override
   void dispose() {
     timer?.cancel();
+    player.dispose();
     super.dispose();
   }
 
@@ -82,7 +93,7 @@ class TimerScreenState extends State<TimerScreen> {
     return await showDialog<bool>(
           context: context,
           builder: (context) => AlertDialog(
-            title: const Text("Exit routine?"),
+            title: const Text("Exit session?"),
             content: const Text(
               "Are you sure you would like to exit your routine? Your progress will not be saved.",
             ),

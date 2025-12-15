@@ -24,8 +24,9 @@ The app's planned features:
 Not features but other things:
 
 - Handle case where someone closes the app (minimize and/or close) while exercising
+  - Seems like default behaviour when someone minimizes or turns off screen is to just keep counting, verify that this behaviour is also consistent with the rest of the functionality later on
 - Add small banner ads while you do your session (no audio)
 
 Next to-do:
 
--
+- Play beep sound between phases
