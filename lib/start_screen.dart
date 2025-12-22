@@ -1,9 +1,20 @@
 import "package:flutter/material.dart";
 import "package:finger_training_app/timer_screen.dart";
 import "package:finger_training_app/models/exercise.dart";
+import "package:finger_training_app/info_screen.dart";
 
 class StartScreen extends StatelessWidget {
   const StartScreen({super.key});
+
+  /*
+    void _openAddExpenseOverlay() {
+    showModalBottomSheet(
+      useSafeArea: true,
+      isScrollControlled: true,
+      context: context,
+      builder: (ctx) => NewExpense(_addExpense),
+    );
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +29,16 @@ class StartScreen extends StatelessWidget {
     routineTotalSec -= 3; // subtract 3 for the "get ready" phase
     routineMin = (routineTotalSec / 60).toInt();
     routineSec = (routineTotalSec % 60).toInt();
+
+    // overlay that is opened to provide information
+    void openInfoOverlay() {
+      showModalBottomSheet(
+        useSafeArea: true,
+        context: context,
+        isScrollControlled: true,
+        builder: (ctx) => InfoScreen(),
+      );
+    }
 
     return Center(
       child: Container(
@@ -47,19 +68,28 @@ class StartScreen extends StatelessWidget {
               style: TextStyle(fontSize: 15),
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: 10),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => TimerScreen(routine),
+            SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => TimerScreen(routine),
+                      ),
+                    );
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Text(
+                      "Start session",
+                      style: TextStyle(fontSize: 20),
+                    ),
                   ),
-                );
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Text("Start session", style: TextStyle(fontSize: 20)),
-              ),
+                ),
+                IconButton(onPressed: openInfoOverlay, icon: Icon(Icons.info)),
+              ],
             ),
             Spacer(),
           ],

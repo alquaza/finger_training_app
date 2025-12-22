@@ -1,10 +1,16 @@
 import "package:flutter/material.dart";
+import "package:flutter/services.dart";
 import "package:finger_training_app/start_screen.dart";
 import "package:finger_training_app/tracking_screen.dart";
 import "package:finger_training_app/settings_screen.dart";
 
 void main() {
-  runApp(const MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+  ]).then((fn) {
+    runApp(const MyApp());
+  });
 }
 
 class MyApp extends StatefulWidget {
@@ -27,6 +33,11 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      // theming
+      theme: ThemeData.light(),
+      darkTheme: ThemeData.dark(),
+      themeMode: ThemeMode.system,
+
       // this title is not displayed inside the app
       title: "Finger Strength Training",
       home: Scaffold(
