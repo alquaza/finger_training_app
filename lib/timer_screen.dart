@@ -2,6 +2,7 @@ import "package:flutter/material.dart";
 import "dart:async";
 import "package:finger_training_app/models/exercise.dart";
 import 'package:audioplayers/audioplayers.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 
 class TimerScreen extends StatefulWidget {
   const TimerScreen(this.routine, {super.key});
@@ -27,6 +28,9 @@ class TimerScreenState extends State<TimerScreen> {
   void initState() {
     super.initState();
     startSession();
+
+    // keeps the screen on while in active session (ie. prevents dimming or going to sleep)
+    WakelockPlus.enable();
 
     // set options so it ignores silent mode (by being playback/media) but doesn't pause other sounds (like music)
     player.setAudioContext(
@@ -144,6 +148,8 @@ class TimerScreenState extends State<TimerScreen> {
         }
 
         if (shouldExit && context.mounted) {
+          // allow screen to turn off again once not in active session
+          WakelockPlus.disable();
           Navigator.of(context).pop(result);
         }
       },

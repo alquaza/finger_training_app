@@ -23,7 +23,6 @@ Not features but other things:
 
 Next to-do:
 
-- Add a tab that explains tips and best practices
 - Learn how to have persistent user data
 - Option for voice (with countdown) vs beep
 - Allow editing of default routine
