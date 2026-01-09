@@ -1,4 +1,5 @@
 import "package:shared_preferences/shared_preferences.dart";
+import "dart:async";
 
 class Settings {
   static SharedPreferencesAsync? _asyncPrefs;
@@ -9,12 +10,21 @@ class Settings {
   }
 
   static Future<void> setDarkMode(bool isDarkMode) async {
-    await _asyncPrefs?.setBool("darkMode", isDarkMode);
+    unawaited(_asyncPrefs?.setBool("darkMode", isDarkMode));
   }
 
   static Future<bool> getDarkMode() async {
     // default to true (dark mode) for first time app is launched
     return await _asyncPrefs?.getBool("darkMode") ?? true;
+  }
+
+  static Future<void> setSoundEnabled(bool isSoundEnabled) async {
+    unawaited(_asyncPrefs?.setBool("soundEnabled", isSoundEnabled));
+  }
+
+  static Future<bool> getSoundEnabled() async {
+    // default to true (sound enabled) for first time app is launched
+    return await _asyncPrefs?.getBool("soundEnabled") ?? true;
   }
 }
 

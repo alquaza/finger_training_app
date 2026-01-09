@@ -1,8 +1,9 @@
 import "package:flutter/material.dart";
 import "dart:async";
 import "package:finger_training_app/classes/exercise.dart";
-import 'package:audioplayers/audioplayers.dart';
-import 'package:wakelock_plus/wakelock_plus.dart';
+import "package:audioplayers/audioplayers.dart";
+import "package:wakelock_plus/wakelock_plus.dart";
+import "package:finger_training_app/classes/settings.dart";
 
 class TimerScreen extends StatefulWidget {
   const TimerScreen(this.routine, {super.key});
@@ -22,12 +23,15 @@ class TimerScreenState extends State<TimerScreen> {
 
   bool isPaused = false;
   bool isFinished = false;
+
   bool soundEnabled = true;
 
   @override
   void initState() {
     super.initState();
-    startSession();
+
+    // initialize soundEnabled based on saved preference
+    _loadSoundEnabled();
 
     // keeps the screen on while in active session (ie. prevents dimming or going to sleep)
     WakelockPlus.enable();
@@ -48,6 +52,15 @@ class TimerScreenState extends State<TimerScreen> {
         ),
       ),
     );
+
+    startSession();
+  }
+
+  Future<void> _loadSoundEnabled() async {
+    final soundEnabledPref = await Settings.getSoundEnabled();
+    setState(() {
+      soundEnabled = soundEnabledPref;
+    });
   }
 
   void startSession() {
@@ -79,10 +92,10 @@ class TimerScreenState extends State<TimerScreen> {
     secondsRemaining = widget.routine[currentExerciseIndex].duration;
   }
 
-  Future<void> playSound() async {
+  void playSound() {
     if (!soundEnabled) return;
-    // now will only play if sound is enabled
-    await player.play(AssetSource('doot.mp3'));
+    // will only play if sound is enabled
+    unawaited(player.play(AssetSource('doot.mp3')));
   }
 
   void togglePause() {
@@ -216,6 +229,7 @@ class TimerScreenState extends State<TimerScreen> {
                         onPressed: () {
                           setState(() {
                             soundEnabled = !soundEnabled;
+                            unawaited(Settings.setSoundEnabled(soundEnabled));
                           });
                         },
                       ),

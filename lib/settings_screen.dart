@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import "package:finger_training_app/classes/settings.dart";
+import "dart:async";
 
 class SettingsScreen extends StatefulWidget {
   final Function(ThemeMode) onThemeChanged;
@@ -11,16 +12,20 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  // this is not actually initializing dark mode, it will be immediately overwritten in initState
+  // these are NOT setting defaults, they will be immediately overwritten in initState
   bool isDarkMode = true;
+  bool isSoundEnabled = true;
 
   @override
   void initState() {
     super.initState();
+
+    // these two just set the booleans based on saved preferences so that the
+    // switches display correctly when the settings screen is opened
     _loadDarkMode();
+    _loadSoundEnabled();
   }
 
-  // called on initState, sets the isDarkMode boolean based on saved preference
   Future<void> _loadDarkMode() async {
     final darkMode = await Settings.getDarkMode();
     setState(() {
@@ -28,8 +33,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
     });
   }
 
-  Future<void> _toggleDarkMode(bool value) async {
-    await Settings.setDarkMode(value);
+  void _toggleDarkMode(bool value) {
+    unawaited(Settings.setDarkMode(value));
     setState(() {
       isDarkMode = value;
     });
@@ -37,8 +42,27 @@ class _SettingsScreenState extends State<SettingsScreen> {
     widget.onThemeChanged(value ? ThemeMode.dark : ThemeMode.light);
   }
 
+  Future<void> _loadSoundEnabled() async {
+    final soundEnabled = await Settings.getSoundEnabled();
+    setState(() {
+      isSoundEnabled = soundEnabled;
+    });
+  }
+
+  void _toggleSoundEnabled(bool value) {
+    unawaited(Settings.setSoundEnabled(value));
+    setState(() {
+      isSoundEnabled = value;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    // ensure the switches are in sync with saved preferences
+    // TODO not the best way to do this since it flickers the animation of the switch
+    _loadDarkMode();
+    _loadSoundEnabled();
+
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
@@ -56,9 +80,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           const SizedBox(height: 24),
           SwitchListTile(
-            title: const Text("Mute Sounds"),
-            value: false,
-            onChanged: (null),
+            title: const Text("Sound Enabled"),
+            value: isSoundEnabled,
+            onChanged: _toggleSoundEnabled,
           ),
         ],
       ),
