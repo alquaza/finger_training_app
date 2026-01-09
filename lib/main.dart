@@ -3,9 +3,11 @@ import "package:flutter/services.dart";
 import "package:finger_training_app/start_screen.dart";
 import "package:finger_training_app/tracking_screen.dart";
 import "package:finger_training_app/settings_screen.dart";
+import "package:finger_training_app/classes/settings.dart";
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+  Settings.init();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]).then((fn) {
@@ -21,22 +23,44 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final List<Widget> screens = const [
-    StartScreen(),
-    TrackingScreen(),
-    SettingsScreen(),
-  ];
-
-  // keeps track of which screen is currently selected
   int selectedIndex = 0;
+  // this is NOT the line that sets the default theme, the variable just has to be initialized
+  // even though it will be immediately overwritten in initState
+  ThemeMode themeMode = ThemeMode.dark;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadTheme();
+  }
+
+  Future<void> _loadTheme() async {
+    final isDarkMode = await Settings.getDarkMode();
+    setState(() {
+      themeMode = isDarkMode ? ThemeMode.dark : ThemeMode.light;
+    });
+  }
+
+  void setThemeMode(ThemeMode mode) {
+    setState(() {
+      themeMode = mode;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    // keeps track of which screen is currently selected
+    final List<Widget> screens = [
+      const StartScreen(),
+      const TrackingScreen(),
+      SettingsScreen(setThemeMode),
+    ];
+
     return MaterialApp(
       // theming
       theme: ThemeData.light(),
       darkTheme: ThemeData.dark(),
-      themeMode: ThemeMode.system,
+      themeMode: themeMode,
 
       // this title is not displayed inside the app
       title: "Finger Strength Training",

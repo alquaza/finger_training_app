@@ -23,6 +23,13 @@ Not features but other things:
 
 Next to-do:
 
-- Learn how to have persistent user data
 - Option for voice (with countdown) vs beep
+- Remember whether mute was set/unset
+- Track workouts
+- Add skip button for each exercise
+- Show how long and how many exercises are left in routine while doing it
 - Allow editing of default routine
+
+Notes to self:
+
+- To debug on physical iOS: developer mode -> run -> trust device (in general -> vpn) -> set xcode scheme to release

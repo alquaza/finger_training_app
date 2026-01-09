@@ -1,6 +1,6 @@
 import "package:flutter/material.dart";
 import "package:finger_training_app/timer_screen.dart";
-import "package:finger_training_app/models/exercise.dart";
+import "package:finger_training_app/classes/exercise.dart";
 import "package:finger_training_app/info_screen.dart";
 
 class StartScreen extends StatelessWidget {

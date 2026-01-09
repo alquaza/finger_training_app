@@ -1,6 +1,6 @@
 import "package:flutter/material.dart";
 import "dart:async";
-import "package:finger_training_app/models/exercise.dart";
+import "package:finger_training_app/classes/exercise.dart";
 import 'package:audioplayers/audioplayers.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 
