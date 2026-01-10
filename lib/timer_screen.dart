@@ -170,23 +170,30 @@ class TimerScreenState extends State<TimerScreen> {
         appBar: AppBar(title: const Text("Training Session")),
         body: Center(
           child: Container(
-            margin: const EdgeInsets.all(40),
+            margin: const EdgeInsets.fromLTRB(40, 0, 40, 30),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(
-                  titleText,
-                  style: const TextStyle(fontSize: 30),
-                  textAlign: TextAlign.center,
-                ),
-                // this text only appears during "Rest" exercise
-                if (titleText == "Rest")
-                  Text(
-                    "Work on your posture, stretch, drink some water, or lightly stretch your pinkies",
-                    style: const TextStyle(fontSize: 15),
+                SizedBox(
+                  height: 50,
+                  child: Text(
+                    titleText,
+                    style: const TextStyle(fontSize: 25),
                     textAlign: TextAlign.center,
                   ),
-                const SizedBox(height: 20),
+                ),
+                // this text only appears during "Rest" exercise
+                SizedBox(
+                  height: 60,
+                  child: titleText == "Rest"
+                      ? Text(
+                          "Work on your posture, stretch, drink some water, or lightly stretch your pinkies",
+                          style: const TextStyle(fontSize: 15),
+                          textAlign: TextAlign.center,
+                        )
+                      : null,
+                ),
+                const SizedBox(height: 10),
                 if (!isFinished)
                   Text(
                     "$secondsRemaining",
@@ -195,21 +202,48 @@ class TimerScreenState extends State<TimerScreen> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
+                const SizedBox(height: 10),
+                SizedBox(
+                  height: 60,
+                  child:
+                      !isFinished &&
+                          currentExerciseIndex + 1 < widget.routine.length
+                      ? Text(
+                          "Next exercise:\n${widget.routine[currentExerciseIndex + 1].name}",
+                          style: const TextStyle(
+                            fontSize: 20,
+                          ),
+                          textAlign: TextAlign.center,
+                        )
+                      : null,
+                ),
                 const SizedBox(height: 30),
-                if (!isFinished &&
-                    currentExerciseIndex + 1 < widget.routine.length)
-                  Text(
-                    "Next exercise:\n${widget.routine[currentExerciseIndex + 1].name}",
-                    style: const TextStyle(
-                      fontSize: 20,
-                    ),
-                    textAlign: TextAlign.center,
+                if (!isFinished)
+                  LinearProgressIndicator(
+                    value: (currentExerciseIndex) / widget.routine.length,
+                    minHeight: 20,
                   ),
                 const SizedBox(height: 30),
                 if (!isFinished)
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      IconButton(
+                        iconSize: 36,
+                        icon: Icon(Icons.arrow_back),
+                        onPressed: currentExerciseIndex > 0
+                            ? () {
+                                setState(() {
+                                  currentExerciseIndex--;
+                                  secondsRemaining = widget
+                                      .routine[currentExerciseIndex]
+                                      .duration;
+                                });
+                              }
+                            // null if first exercise, which greys out the button
+                            : null,
+                      ),
+                      SizedBox(width: 10),
                       ElevatedButton(
                         onPressed: togglePause,
                         child: Padding(
@@ -219,6 +253,16 @@ class TimerScreenState extends State<TimerScreen> {
                             style: const TextStyle(fontSize: 20),
                           ),
                         ),
+                      ),
+                      SizedBox(width: 10),
+                      IconButton(
+                        iconSize: 36,
+                        icon: Icon(Icons.arrow_forward),
+                        onPressed: () {
+                          setState(() {
+                            moveToNextExercise();
+                          });
+                        },
                       ),
                       SizedBox(width: 20),
                       IconButton(

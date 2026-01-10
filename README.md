@@ -13,7 +13,6 @@ The app's planned features:
 - Allow changing settings:
   - Optional voice/beeping/other sound between phases so you don't have to look at phone
   - Optional notifications to remind you to train (choose how many times and how often)
-  - Switch to/from dark mode
 
 Not features but other things:
 
@@ -24,10 +23,10 @@ Not features but other things:
 Next to-do:
 
 - Option for voice (with countdown) vs beep
-- Remember whether mute was set/unset
-- Track workouts
 - Add skip button for each exercise
-- Show how long and how many exercises are left in routine while doing it
+- Show how many exercises are left in routine while doing it
+- /////////////////////////////////////////
+- Track workouts
 - Allow editing of default routine
 
 Notes to self:
