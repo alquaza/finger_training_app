@@ -132,17 +132,17 @@ class TimerScreenState extends State<TimerScreen> {
     // will only play if sound is enabled
     // will only play voice effects if voice is enabled
     else if (soundName == "ding") {
-      unawaited(player.play(AssetSource('ding.mp3')));
+      unawaited(player.play(AssetSource("ding.mp3")));
     } else if (soundName == "exercise" && voiceEnabled) {
-      unawaited(player.play(AssetSource('exercise.mp3')));
+      unawaited(player.play(AssetSource("exercise.mp3")));
     } else if (soundName == "rest" && voiceEnabled) {
-      unawaited(player.play(AssetSource('rest.mp3')));
+      unawaited(player.play(AssetSource("rest.mp3")));
     } else if (soundName == "3" && voiceEnabled) {
-      unawaited(player.play(AssetSource('3.mp3')));
+      unawaited(player.play(AssetSource("3.mp3")));
     } else if (soundName == "2" && voiceEnabled) {
-      unawaited(player.play(AssetSource('2.mp3')));
+      unawaited(player.play(AssetSource("2.mp3")));
     } else if (soundName == "1" && voiceEnabled) {
-      unawaited(player.play(AssetSource('1.mp3')));
+      unawaited(player.play(AssetSource("1.mp3")));
     }
   }
 

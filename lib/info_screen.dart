@@ -1,5 +1,5 @@
 import "package:flutter/material.dart";
-import 'package:url_launcher/url_launcher.dart';
+import "package:url_launcher/url_launcher.dart";
 
 class InfoScreen extends StatelessWidget {
   const InfoScreen({super.key});

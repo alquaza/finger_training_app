@@ -7,7 +7,8 @@ class StartScreen extends StatelessWidget {
   const StartScreen({super.key});
 
   /*
-    void _openAddExpenseOverlay() {
+  // code for adding new routine, see new_routine.dart file
+  void _openAddExpenseOverlay() {
     showModalBottomSheet(
       useSafeArea: true,
       isScrollControlled: true,

@@ -1,6 +1,6 @@
 # finger_training_app
 
-Built by Alex Chen.
+Built by Alex Chen using Flutter.
 
 An app to help you train your finger strength (for rock climbing). It uses the methodology
 discussed by Emil Abrahamsson in his Youtube videos.
@@ -22,7 +22,6 @@ Not features but other things:
 
 Next to-do:
 
-- Option for voice (with countdown) vs beep
 - Track workouts
 - Allow editing of default routine
 

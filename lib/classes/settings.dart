@@ -36,18 +36,3 @@ class Settings {
     return await _asyncPrefs?.getBool("voiceEnabled") ?? true;
   }
 }
-
-
-
-
-/*
-// example for using SharedPreferencesAsync
-
-final asyncPrefs = SharedPreferencesAsync();
-
-await asyncPrefs.setBool('repeat', true);
-await asyncPrefs.setString('action', 'Start');
-
-final bool? repeat = await asyncPrefs.getBool('repeat');
-final String? action = await asyncPrefs.getString('action');
-*/
