@@ -24,7 +24,9 @@ class TimerScreenState extends State<TimerScreen> {
   bool isPaused = false;
   bool isFinished = false;
 
+  // these are initialized here but immediately overwritten in initState
   bool soundEnabled = true;
+  bool voiceEnabled = true;
 
   @override
   void initState() {
@@ -32,6 +34,7 @@ class TimerScreenState extends State<TimerScreen> {
 
     // initialize soundEnabled based on saved preference
     _loadSoundEnabled();
+    _loadVoiceEnabled();
 
     // keeps the screen on while in active session (ie. prevents dimming or going to sleep)
     WakelockPlus.enable();
@@ -63,6 +66,13 @@ class TimerScreenState extends State<TimerScreen> {
     });
   }
 
+  Future<void> _loadVoiceEnabled() async {
+    final voiceEnabledPref = await Settings.getVoiceEnabled();
+    setState(() {
+      voiceEnabled = voiceEnabledPref;
+    });
+  }
+
   void startSession() {
     secondsRemaining = widget.routine[currentExerciseIndex].duration;
 
@@ -71,11 +81,34 @@ class TimerScreenState extends State<TimerScreen> {
       if (isPaused || isFinished) return;
 
       setState(() {
-        if (secondsRemaining > 1) {
+        // no need to do sound management here because it is handled in the playSound method
+
+        if (secondsRemaining == 5) {
           secondsRemaining--;
-        } else {
-          playSound();
+          // begin countdown
+          if (widget.routine[currentExerciseIndex].name == "Rest" ||
+              widget.routine[currentExerciseIndex].name == "Get ready") {
+            // play exercise sound because it says "exercise in 3... 2... 1..."
+            playSound("exercise");
+          } else {
+            // else covers all the possible exercise names
+            playSound("rest");
+          }
+        } else if (secondsRemaining == 4) {
+          secondsRemaining--;
+          playSound("3");
+        } else if (secondsRemaining == 3) {
+          secondsRemaining--;
+          playSound("2");
+        } else if (secondsRemaining == 2) {
+          secondsRemaining--;
+          playSound("1");
+        } else if (secondsRemaining <= 1) {
+          // exercise/rest is done
+          playSound("ding");
           moveToNextExercise();
+        } else {
+          secondsRemaining--;
         }
       });
     });
@@ -92,10 +125,25 @@ class TimerScreenState extends State<TimerScreen> {
     secondsRemaining = widget.routine[currentExerciseIndex].duration;
   }
 
-  void playSound() {
-    if (!soundEnabled) return;
+  void playSound(String soundName) {
+    if (!soundEnabled) {
+      return;
+    }
     // will only play if sound is enabled
-    unawaited(player.play(AssetSource('doot.mp3')));
+    // will only play voice effects if voice is enabled
+    else if (soundName == "ding") {
+      unawaited(player.play(AssetSource('ding.mp3')));
+    } else if (soundName == "exercise" && voiceEnabled) {
+      unawaited(player.play(AssetSource('exercise.mp3')));
+    } else if (soundName == "rest" && voiceEnabled) {
+      unawaited(player.play(AssetSource('rest.mp3')));
+    } else if (soundName == "3" && voiceEnabled) {
+      unawaited(player.play(AssetSource('3.mp3')));
+    } else if (soundName == "2" && voiceEnabled) {
+      unawaited(player.play(AssetSource('2.mp3')));
+    } else if (soundName == "1" && voiceEnabled) {
+      unawaited(player.play(AssetSource('1.mp3')));
+    }
   }
 
   void togglePause() {

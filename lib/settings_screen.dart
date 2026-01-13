@@ -15,6 +15,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   // these are NOT setting defaults, they will be immediately overwritten in initState
   bool isDarkMode = true;
   bool isSoundEnabled = true;
+  bool isVoiceEnabled = true;
 
   @override
   void initState() {
@@ -24,6 +25,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     // switches display correctly when the settings screen is opened
     _loadDarkMode();
     _loadSoundEnabled();
+    _loadVoiceEnabled();
   }
 
   Future<void> _loadDarkMode() async {
@@ -56,12 +58,27 @@ class _SettingsScreenState extends State<SettingsScreen> {
     });
   }
 
+  Future<void> _loadVoiceEnabled() async {
+    final voiceEnabled = await Settings.getVoiceEnabled();
+    setState(() {
+      isVoiceEnabled = voiceEnabled;
+    });
+  }
+
+  void _toggleVoiceEnabled(bool value) {
+    unawaited(Settings.setVoiceEnabled(value));
+    setState(() {
+      isVoiceEnabled = value;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     // ensure the switches are in sync with saved preferences
     // TODO not the best way to do this since it flickers the animation of the switch
     _loadDarkMode();
     _loadSoundEnabled();
+    _loadVoiceEnabled();
 
     return Padding(
       padding: const EdgeInsets.all(16.0),
@@ -81,9 +98,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
           const SizedBox(height: 24),
           SwitchListTile(
             title: const Text("Sound Enabled"),
+            subtitle: const Text("Sound effects during training"),
             value: isSoundEnabled,
             onChanged: _toggleSoundEnabled,
           ),
+          const SizedBox(height: 24),
+          SwitchListTile(
+            title: const Text("Voice Countdown Enabled"),
+            subtitle: const Text("Also requires sound to be enabled"),
+            value: isVoiceEnabled,
+            onChanged: isSoundEnabled ? _toggleVoiceEnabled : null,
+          ),
+          const SizedBox(height: 24),
         ],
       ),
     );

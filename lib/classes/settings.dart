@@ -26,6 +26,15 @@ class Settings {
     // default to true (sound enabled) for first time app is launched
     return await _asyncPrefs?.getBool("soundEnabled") ?? true;
   }
+
+  static Future<void> setVoiceEnabled(bool isVoiceEnabled) async {
+    unawaited(_asyncPrefs?.setBool("voiceEnabled", isVoiceEnabled));
+  }
+
+  static Future<bool> getVoiceEnabled() async {
+    // default to true (voice enabled) for first time app is launched
+    return await _asyncPrefs?.getBool("voiceEnabled") ?? true;
+  }
 }
 
 

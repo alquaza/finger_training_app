@@ -19,7 +19,7 @@ List<Exercise> defaultRoutine = [
 */
 
 List<Exercise> defaultRoutine = [
-  Exercise("Get ready", 3),
+  Exercise("Get ready", 5),
 
   // 6 sets of four finger half-crimp
   Exercise("Four finger half-crimp", 10),
