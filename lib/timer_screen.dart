@@ -168,120 +168,146 @@ class TimerScreenState extends State<TimerScreen> {
       },
       child: Scaffold(
         appBar: AppBar(title: const Text("Training Session")),
-        body: Center(
-          child: Container(
-            margin: const EdgeInsets.fromLTRB(40, 0, 40, 30),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                SizedBox(
-                  height: 50,
+        body: Container(
+          margin: const EdgeInsets.fromLTRB(40, 0, 40, 30),
+          child: (isFinished)
+              // if finished, just show the title text
+              ? Center(
                   child: Text(
                     titleText,
                     style: const TextStyle(fontSize: 25),
                     textAlign: TextAlign.center,
                   ),
-                ),
-                // this text only appears during "Rest" exercise
-                SizedBox(
-                  height: 60,
-                  child: titleText == "Rest"
-                      ? Text(
-                          "Work on your posture, stretch, drink some water, or lightly stretch your pinkies",
-                          style: const TextStyle(fontSize: 15),
-                          textAlign: TextAlign.center,
-                        )
-                      : null,
-                ),
-                const SizedBox(height: 10),
-                if (!isFinished)
-                  Text(
-                    "$secondsRemaining",
-                    style: const TextStyle(
-                      fontSize: 150,
-                      fontWeight: FontWeight.bold,
+                )
+              // if not finished, show everything else
+              : Column(
+                  children: [
+                    SizedBox(height: 20),
+                    Expanded(
+                      flex: 1,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            titleText,
+                            style: const TextStyle(fontSize: 25),
+                            textAlign: TextAlign.center,
+                          ),
+                          titleText == "Rest"
+                              ? Text(
+                                  // this text only appears during "Rest"
+                                  "Work on your posture, stretch, drink some water, or lightly stretch your pinkies",
+                                  style: const TextStyle(fontSize: 15),
+                                  textAlign: TextAlign.center,
+                                )
+                              : Text(""),
+                        ],
+                      ),
                     ),
-                  ),
-                const SizedBox(height: 10),
-                SizedBox(
-                  height: 60,
-                  child:
-                      !isFinished &&
-                          currentExerciseIndex + 1 < widget.routine.length
-                      ? Text(
-                          "Next exercise:\n${widget.routine[currentExerciseIndex + 1].name}",
+                    const SizedBox(height: 10),
+                    Expanded(
+                      flex: 2,
+                      child: Center(
+                        child: Text(
+                          "$secondsRemaining",
                           style: const TextStyle(
-                            fontSize: 20,
+                            fontSize: 150,
+                            fontWeight: FontWeight.bold,
                           ),
-                          textAlign: TextAlign.center,
-                        )
-                      : null,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Expanded(
+                      flex: 1,
+                      child: Center(
+                        child: currentExerciseIndex + 1 < widget.routine.length
+                            ? Text(
+                                "Next exercise:\n${widget.routine[currentExerciseIndex + 1].name}",
+                                style: const TextStyle(
+                                  fontSize: 20,
+                                ),
+                                textAlign: TextAlign.center,
+                              )
+                            : Text(""),
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Expanded(
+                      flex: 2,
+                      child: Column(
+                        children: [
+                          LinearProgressIndicator(
+                            value:
+                                (currentExerciseIndex) / widget.routine.length,
+                            minHeight: 20,
+                          ),
+                          Spacer(),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Spacer(),
+                              IconButton(
+                                iconSize: 24,
+                                icon: Icon(Icons.arrow_back),
+                                onPressed: currentExerciseIndex > 0
+                                    ? () {
+                                        setState(() {
+                                          currentExerciseIndex--;
+                                          secondsRemaining = widget
+                                              .routine[currentExerciseIndex]
+                                              .duration;
+                                        });
+                                      }
+                                    // null if first exercise, which greys out the button
+                                    : null,
+                              ),
+                              Spacer(),
+                              ElevatedButton(
+                                onPressed: togglePause,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10),
+                                  child: Text(
+                                    isPaused ? "Resume" : "Pause",
+                                    style: const TextStyle(fontSize: 20),
+                                  ),
+                                ),
+                              ),
+                              Spacer(),
+                              IconButton(
+                                iconSize: 24,
+                                icon: Icon(Icons.arrow_forward),
+                                onPressed: () {
+                                  setState(() {
+                                    moveToNextExercise();
+                                  });
+                                },
+                              ),
+                              Spacer(),
+                            ],
+                          ),
+                          Spacer(),
+                          IconButton(
+                            iconSize: 36,
+                            icon: Icon(
+                              soundEnabled ? Icons.volume_up : Icons.volume_off,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                soundEnabled = !soundEnabled;
+                                unawaited(
+                                  Settings.setSoundEnabled(soundEnabled),
+                                );
+                              });
+                            },
+                          ),
+                          Spacer(),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                  ],
                 ),
-                const SizedBox(height: 30),
-                if (!isFinished)
-                  LinearProgressIndicator(
-                    value: (currentExerciseIndex) / widget.routine.length,
-                    minHeight: 20,
-                  ),
-                const SizedBox(height: 30),
-                if (!isFinished)
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      IconButton(
-                        iconSize: 36,
-                        icon: Icon(Icons.arrow_back),
-                        onPressed: currentExerciseIndex > 0
-                            ? () {
-                                setState(() {
-                                  currentExerciseIndex--;
-                                  secondsRemaining = widget
-                                      .routine[currentExerciseIndex]
-                                      .duration;
-                                });
-                              }
-                            // null if first exercise, which greys out the button
-                            : null,
-                      ),
-                      SizedBox(width: 10),
-                      ElevatedButton(
-                        onPressed: togglePause,
-                        child: Padding(
-                          padding: const EdgeInsets.all(10),
-                          child: Text(
-                            isPaused ? "Resume" : "Pause",
-                            style: const TextStyle(fontSize: 20),
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: 10),
-                      IconButton(
-                        iconSize: 36,
-                        icon: Icon(Icons.arrow_forward),
-                        onPressed: () {
-                          setState(() {
-                            moveToNextExercise();
-                          });
-                        },
-                      ),
-                      SizedBox(width: 20),
-                      IconButton(
-                        iconSize: 36,
-                        icon: Icon(
-                          soundEnabled ? Icons.volume_up : Icons.volume_off,
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            soundEnabled = !soundEnabled;
-                            unawaited(Settings.setSoundEnabled(soundEnabled));
-                          });
-                        },
-                      ),
-                    ],
-                  ),
-              ],
-            ),
-          ),
         ),
       ),
     );

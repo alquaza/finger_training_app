@@ -23,9 +23,6 @@ Not features but other things:
 Next to-do:
 
 - Option for voice (with countdown) vs beep
-- Add skip button for each exercise
-- Show how many exercises are left in routine while doing it
-- /////////////////////////////////////////
 - Track workouts
 - Allow editing of default routine
 
