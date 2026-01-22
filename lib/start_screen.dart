@@ -62,6 +62,9 @@ class StartScreen extends StatelessWidget {
             Text(
               routine[1].name, // index 1 so that it skips "get ready"
               style: TextStyle(fontSize: 25),
+              maxLines: 2,
+              softWrap: true,
+              overflow: TextOverflow.ellipsis,
             ),
             Spacer(),
             Text(

@@ -240,6 +240,9 @@ class TimerScreenState extends State<TimerScreen> {
                             titleText,
                             style: const TextStyle(fontSize: 25),
                             textAlign: TextAlign.center,
+                            maxLines: 2,
+                            softWrap: true,
+                            overflow: TextOverflow.ellipsis,
                           ),
                           titleText == "Rest"
                               ? Text(
@@ -276,6 +279,9 @@ class TimerScreenState extends State<TimerScreen> {
                                   fontSize: 20,
                                 ),
                                 textAlign: TextAlign.center,
+                                maxLines: 2,
+                                softWrap: true,
+                                overflow: TextOverflow.ellipsis,
                               )
                             : Text(""),
                       ),
