@@ -27,7 +27,7 @@ class StartScreen extends StatelessWidget {
     for (int i = 0; i < routine.length; i++) {
       routineTotalSec += routine[i].duration;
     }
-    routineTotalSec -= 3; // subtract 3 for the "get ready" phase
+    routineTotalSec -= 5; // subtract 5 for the "get ready" phase
     routineMin = (routineTotalSec / 60).toInt();
     routineSec = (routineTotalSec % 60).toInt();
 
